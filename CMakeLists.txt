@@ -33,6 +33,19 @@ AUX_SOURCE_DIRECTORY( ./src/ DDMarlinPandora_SRCS )
 
 ### DEPENDENCIES ############################################################
 
+#set monitoring
+
+if(DEFINED ENV{PANDORAPFA_BASE})
+    set(PANDORAPFA_BASE "$ENV{PANDORAPFA_BASE}")
+else()
+    set(PANDORAPFA_BASE "/users/muoncollider/palombin/PandoraPFA")
+endif()
+
+set(PANDORA_MONITORING OFF)
+set(PandoraMonitoring_DIR "${PANDORAPFA_BASE}")
+set(LCContent_DIR "${PANDORAPFA_BASE}")
+set(PandoraSDK_DIR "${PANDORAPFA_BASE}")
+
 FIND_PACKAGE( Marlin 1.0 REQUIRED )
 FIND_PACKAGE( MarlinUtil 01.10 REQUIRED )
 FIND_PACKAGE( PandoraSDK 03.00.00 REQUIRED )
@@ -40,6 +53,13 @@ FIND_PACKAGE( LCContent 03.00.00 REQUIRED )
 FIND_PACKAGE( DD4hep REQUIRED )
 FIND_PACKAGE( ROOT REQUIRED )
 FIND_PACKAGE( MarlinTrk REQUIRED )
+
+# added for random distro generation
+FIND_PACKAGE( GSL REQUIRED )
+INCLUDE_DIRECTORIES( SYSTEM ${GSL_INCLUDE_DIRS} )
+LINK_LIBRARIES( ${GSL_LIBRARIES} )
+ADD_DEFINITIONS( ${GSL_DEFINITIONS} )
+
 
 
 FOREACH( pkg PandoraSDK Marlin MarlinUtil  LCContent DD4hep ROOT MarlinTrk )
